@@ -1,0 +1,25 @@
+{
+    "editor.fontSize": 14,
+    "window.zoomLevel": 0,
+    "terminal.integrated.fontSize": 14,
+    "workbench.colorTheme": "Solarized Dark",
+    "workbench.colorCustomizations": { 
+        "editor.foreground": "#aabbcc" 
+    },
+    "editor.tokenColorCustomizations": {
+        "[Monokai]": {
+            "comments": "#222499"
+        },
+        "[*Dark*]": {
+            "variables": "#229977"
+        },
+        "[Abyss][Red]": {
+            "keywords": "#f00"
+        }
+    },
+    "workbench.iconTheme": "vscode-icons",
+    "editor.fontFamily": "Consolas, 'Courier New', monospace",
+    "python.analysis.extraPaths": [
+        "./connection"
+    ]
+}

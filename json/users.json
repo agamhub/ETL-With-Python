@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "Agam Adhinegara",
+        "martial": "Married",
+        "license": [
+                    {"sim": "A", "exp_date":2010},
+                    {"sim": "C", "exp_date":2010}
+                   ]
+    },
+    {
+        "id": 2,
+        "name": "Lorita",
+        "martial": "Married",
+        "license": [
+                    {"sim": "A", "exp_date":2010},
+                    {"sim": "C", "exp_date":2010}
+                   ]
+    },
+    {
+        "id": 3,
+        "name": "safa",
+        "martial": "Married",
+        "license": null
+    }
+]
