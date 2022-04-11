@@ -87,12 +87,18 @@ df1 = pd.DataFrame([pd.Series(x) for x in df['food pair']])
 df1.columns = [f"foor_pair_{x+1}" for x in df1.columns]
 df = pd.concat([df, df1], axis=1)
 df2 = df['id'].apply(lambda x: '{0:0>10}'.format(x))
-df = pd.concat([df2,df['name'],df['email']], axis=1)
+df = pd.concat([df2,df['name'],df['email'],df['total_of_method_value']], axis=1)
 df = df.rename(columns={'id':'userid','name':'username'})
+df['dupe'] = df.duplicated('userid')
+df_g = df.groupby(['userid']).sum('total_of_method_value').reset_index()
+df_g['count'] = df_g['userid'].map(df['userid'].value_counts())
+df_s = df.sort_values(by=['userid'])
+
+print(df_s)
 
 if __name__ == "__main__":
     etl_con = etl() 
-    etl_con.execute_many(df,'fp_db.users')
+    #etl_con.execute_many(df,'fp_db.users')
  
 print(time()-stime)
 
