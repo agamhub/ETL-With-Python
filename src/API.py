@@ -91,10 +91,12 @@ df = pd.concat([df2,df['name'],df['email'],df['total_of_method_value']], axis=1)
 df = df.rename(columns={'id':'userid','name':'username'})
 df['dupe'] = df.duplicated('userid')
 df_g = df.groupby(['userid']).sum('total_of_method_value').reset_index()
-df_g['count'] = df_g['userid'].map(df['userid'].value_counts())
 df_s = df.sort_values(by=['userid'])
-
+df_s['count'] = df_s['userid'].map(df['userid'].value_counts())
+df_tail = df_s.head(10)
 print(df_s)
+with pd.ExcelWriter("food.xlsx") as w:
+    df.to_excel(w, sheet_name="food")
 
 if __name__ == "__main__":
     etl_con = etl() 
