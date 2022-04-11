@@ -2,7 +2,7 @@ from configparser import ConfigParser
 from logging import exception
 
 
-def config(filename="database.ini",section="postgresql",path=".\\.vscode\\"):
+def config(filename="database.ini",section="postgresql",path=".\\vscode\\"):
     parser = ConfigParser()
     parser.read(path + filename)
     db = {}
