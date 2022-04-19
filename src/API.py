@@ -99,6 +99,6 @@ with pd.ExcelWriter("food.xlsx") as w:
 
 if __name__ == "__main__":
     etl_con = etl() 
-    #etl_con.execute_many(df,'fp_db.users')
+    etl_con.execute_many(df,'fp_db.users')
  
 print(time()-stime)
