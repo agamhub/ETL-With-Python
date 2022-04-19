@@ -93,7 +93,7 @@ df_g = df.groupby(['userid']).sum('total_of_method_value').reset_index()
 df_s = df.sort_values(by=['userid'])
 df_s['count'] = df_s['userid'].map(df['userid'].value_counts())
 df_tail = df_s.head(10)
-print(df_s)
+print(df)
 with pd.ExcelWriter("food.xlsx") as w:
     df.to_excel(w, sheet_name="food")
 
