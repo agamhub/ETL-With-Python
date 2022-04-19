@@ -1,6 +1,5 @@
 import json
 from logging import exception
-from pickle import TRUE
 from time import time
 import requests
 import psycopg2
@@ -20,7 +19,7 @@ class etl:
         try:
             self.params = config()
             self.connection = psycopg2.connect(**self.params)
-            self.connection.autocommit = TRUE
+            self.connection.autocommit = True
             self.cur = self.connection.cursor()
         except(Exception, psycopg2.DatabaseError) as e:
             print(e)
@@ -103,5 +102,3 @@ if __name__ == "__main__":
     #etl_con.execute_many(df,'fp_db.users')
  
 print(time()-stime)
-
-
