@@ -18,3 +18,5 @@ for x,i in enumerate(y):
     if i[1] == 0:
         i[1] = 1
     v.append([i[1],h[x][1]])
+
+print(v)
