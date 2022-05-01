@@ -28,7 +28,12 @@ class etl:
         insert_command = "INSERT INTO fp_db.users(userid,username) VALUES('" + id +"','"+ name +"')"
         self.cur.execute(insert_command)
 
-    def execute_many(self, df, table):
+    def dynamic_col(self,t):
+        self.lst = []
+        for i in range(len(t)):
+            self.lst.append('%s')  
+
+    def execute_many(self,df,table):
         """
         Using cursor.executemany() to insert the dataframe
         """
@@ -36,8 +41,9 @@ class etl:
         tuples = [tuple(x) for x in df.to_numpy()]
         # Comma-separated dataframe columns
         cols = ','.join(list(df.columns))
+        val = ','.join(list(self.lst))
         # SQL quert to execute
-        query  = "INSERT INTO %s(%s) VALUES(%%s,%%s,%%s)" % (table, cols)
+        query  = "INSERT INTO %s(%s) VALUES(%s)" % (table, cols,val)
         try:
             self.cur.executemany(query, tuples)
             self.connection.commit()
@@ -86,19 +92,20 @@ df1 = pd.DataFrame([pd.Series(x) for x in df['food pair']])
 df1.columns = [f"foor_pair_{x+1}" for x in df1.columns]
 df = pd.concat([df, df1], axis=1)
 df2 = df['id'].apply(lambda x: '{0:0>10}'.format(x))
-df = pd.concat([df2,df['name'],df['email'],df['total_of_method_value']], axis=1)
+df = pd.concat([df2,df['name'],df['email']], axis=1)
 df = df.rename(columns={'id':'userid','name':'username'})
-df['dupe'] = df.duplicated('userid')
+#df['dupe'] = df.duplicated('userid')
 df_g = df.groupby(['userid']).sum('total_of_method_value').reset_index()
 df_s = df.sort_values(by=['userid'])
 df_s['count'] = df_s['userid'].map(df['userid'].value_counts())
 df_tail = df_s.head(10)
-print(df)
+df_col = df.columns
+#print(df)
 with pd.ExcelWriter("food.xlsx") as w:
     df.to_excel(w, sheet_name="food")
 
 if __name__ == "__main__":
     etl_con = etl() 
-    etl_con.execute_many(df,'fp_db.users')
+    #etl_con.execute_many(df_col,df,'fp_db.users')
  
-print(time()-stime)
+#print(time()-stime)
