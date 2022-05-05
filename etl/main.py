@@ -8,6 +8,7 @@ from config import config
 import DatabaseInsert as db
 from pprint import pprint
 import pandas as pd
+from datetime import timedelta
 
 class etl:
 
@@ -53,16 +54,24 @@ class etl:
                                                                                 '3.key':'umur_4','3.doc_count':'umur_count_4','3.usia.value':'usia_val_4',
                                                                                 '4.key':'umur_5','4.doc_count':'umur_count_5','4.usia.value':'usia_val_5'}),inplace=True)
         df_con = pd.concat([df_list_data,df_json_kel,df_json_umur],axis=1)
+        df_con['logname'] = 'extraction_prov_json'
         df_final = df_con[['key','doc_count','jumlah_kasus','jumlah_sembuh','jumlah_meninggal','jumlah_dirawat','jenis_l','count_l','jenis_p','count_p'
                     ,'umur_1','umur_count_1','usia_val_1','umur_2','umur_count_2','usia_val_2','umur_3','umur_count_3','usia_val_3'
                     ,'umur_4','umur_count_4','usia_val_4','umur_5','umur_count_5','usia_val_5','lokasi_lon','lokasi_lat','penambahan_positif','penambahan_sembuh','penambahan_meninggal'
                 ]].astype("string")
         df_final['attu_timestamp'] = df_last_date + " "+ str(pd.Timestamp.now().time())
+        df_concat = pd.concat([df_con[['logname']][:1],df_final[['attu_timestamp']][:1]],axis=1)
         df_col = df_final.columns  
         db.Database.__init__(self)
-        db.Database.dynamic_col(self,df_col)   
-        db.Database.execute_many(self,df_final,'fp_db.covid_all')
-  
+        db.Database.dynamic_col(self,df_col) 
+        db.Database.join_list(self,df_final)
+        db.Database.tuple(self,df_final)
+        for i in df_concat.values:
+            if db.Database.update_log(self,i,'extraction_prov_json') == "No Updated":
+                print('The latest data still same')
+            else:
+                db.Database.execute_many(self,'fp_db.covid_all')
+
 if __name__ == "__main__":
     pop = etl()
     pop.loop()
