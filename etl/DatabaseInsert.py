@@ -27,7 +27,7 @@ class Database:
         self.tuples = [tuple(x) for x in df.to_numpy()]    
 
     def update_log(self,val,log):
-        sql_exists = "SELECT EXISTS(SELECT 'log exists' FROM fp_db.logging WHERE logging_name = %s AND CAST(attu_timestamp AS DATE) = CAST(%s AS DATE))"
+        sql_exists = "SELECT EXISTS(SELECT 'log exists' FROM fp_db.logging WHERE logging_name = %s AND CAST(attu_timestamp AS DATE) >= CAST(%s AS DATE))"
         sql_insert = "INSERT INTO fp_db.logging(logging_name,attu_timestamp) VALUES(%s,%s)"
         sql_update = "UPDATE fp_db.logging SET (logging_name,attu_timestamp) = (%s,%s) WHERE logging_name = '"+ log +"'"
         try:
@@ -36,7 +36,6 @@ class Database:
             if self.cur.fetchone()[0]:
                 return 'No Updated'
             else:    
-                self.cur.execute(sql_update,val)
                 self.cur.execute(sql_insert,val)
             self.connection.commit()
         except(Exception,psycopg2.DatabaseError) as e:

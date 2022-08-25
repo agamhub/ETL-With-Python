@@ -59,7 +59,7 @@ class etl:
                     ,'umur_1','umur_count_1','usia_val_1','umur_2','umur_count_2','usia_val_2','umur_3','umur_count_3','usia_val_3'
                     ,'umur_4','umur_count_4','usia_val_4','umur_5','umur_count_5','usia_val_5','lokasi_lon','lokasi_lat','penambahan_positif','penambahan_sembuh','penambahan_meninggal'
                 ]].astype("string")
-        df_final['attu_timestamp'] = df_last_date + " "+ str(pd.Timestamp.now().time())
+        df_final['attu_timestamp'] = df_last_date + " " + str(pd.Timestamp.now().time())
         df_concat = pd.concat([df_con[['logname']][:1],df_final[['attu_timestamp']][:1]],axis=1)
         df_col = df_final.columns  
         db.Database.__init__(self)
@@ -76,3 +76,4 @@ if __name__ == "__main__":
     pop = etl()
     pop.loop()
     pop.extraction_prov_json()
+    
