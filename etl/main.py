@@ -9,6 +9,7 @@ import DatabaseInsert as db
 from pprint import pprint
 import pandas as pd
 from datetime import timedelta
+import time
 
 class etl:
 
